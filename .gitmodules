@@ -1,0 +1,87 @@
+[submodule "roles/common"]
+	path = roles/common
+	url = https://codeberg.org/ansible/common.git
+[submodule "roles/common-systools"]
+	path = roles/common-systools
+	url = https://codeberg.org/ansible/common-systools.git
+[submodule "roles/dotfiles"]
+	path = roles/dotfiles
+	url = https://codeberg.org/ansible/dotfiles.git
+[submodule "roles/locales"]
+	path = roles/locales
+	url = https://codeberg.org/ansible/locales.git
+[submodule "roles/ssh"]
+	path = roles/ssh
+	url = https://codeberg.org/ansible/ssh.git
+[submodule "roles/swap"]
+	path = roles/swap
+	url = https://codeberg.org/ansible/swap.git
+[submodule "roles/desktop-environment"]
+	path = roles/desktop-environment
+	url = https://codeberg.org/ansible/desktop-environment.git
+[submodule "roles/golang"]
+	path = roles/golang
+	url = https://codeberg.org/ansible/golang.git
+[submodule "roles/i3wm"]
+	path = roles/i3wm
+	url = https://codeberg.org/ansible/i3wm.git
+[submodule "roles/python3"]
+	path = roles/python3
+	url = https://codeberg.org/ansible/python3.git
+[submodule "roles/boot-grub"]
+	path = roles/boot-grub
+	url = https://codeberg.org/ansible/boot-grub.git
+[submodule "roles/qbittorrent"]
+	path = roles/qbittorrent
+	url = https://codeberg.org/ansible/qbittorrent.git
+[submodule "roles/flatpak-remote"]
+	path = roles/flatpak-remote
+	url = https://codeberg.org/ansible/flatpak-remote.git
+[submodule "roles/fonts"]
+	path = roles/fonts
+	url = https://codeberg.org/ansible/fonts.git
+[submodule "roles/pulseaudio"]
+	path = roles/pulseaudio
+	url = https://codeberg.org/ansible/pulseaudio.git
+[submodule "roles/tailscale"]
+	path = roles/tailscale
+	url = https://codeberg.org/ansible/tailscale.git
+[submodule "roles/browser-firefox"]
+	path = roles/browser-firefox
+	url = https://codeberg.org/ansible/browser-firefox.git
+[submodule "roles/desktop-tools"]
+	path = roles/desktop-tools
+	url = https://codeberg.org/ansible/desktop-tools.git
+[submodule "roles/editor-vscodium"]
+	path = roles/editor-vscodium
+	url = https://codeberg.org/ansible/editor-vscodium.git
+[submodule "roles/fityk"]
+	path = roles/fityk
+	url = https://codeberg.org/ansible/fityk.git
+[submodule "roles/libreoffice"]
+	path = roles/libreoffice
+	url = https://codeberg.org/ansible/libreoffice.git
+[submodule "roles/okular"]
+	path = roles/okular
+	url = https://codeberg.org/ansible/okular.git
+[submodule "roles/pandoc"]
+	path = roles/pandoc
+	url = https://codeberg.org/ansible/pandoc.git
+[submodule "roles/rofi-calc"]
+	path = roles/rofi-calc
+	url = https://codeberg.org/ansible/rofi-calc.git
+[submodule "roles/sioyek-pdf"]
+	path = roles/sioyek-pdf
+	url = https://codeberg.org/ansible/sioyek-pdf.git
+[submodule "roles/speech-to-text"]
+	path = roles/speech-to-text
+	url = https://codeberg.org/ansible/speech-to-text.git
+[submodule "roles/thorium-reader"]
+	path = roles/thorium-reader
+	url = https://codeberg.org/ansible/thorium-reader.git
+[submodule "roles/unison"]
+	path = roles/unison
+	url = https://codeberg.org/ansible/unison.git
+[submodule "roles/zotero"]
+	path = roles/zotero
+	url = https://codeberg.org/ansible/zotero.git

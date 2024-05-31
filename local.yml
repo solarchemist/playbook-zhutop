@@ -1,0 +1,142 @@
+---
+
+# do not remove the string "zhutop" from the name - I use it to identify this play
+# in logic statements in the various roles used by this play
+- name: Academic playbook zhutop
+  hosts: all
+
+  pre_tasks:
+    - name: Ensure ansible log directory exists
+      ansible.builtin.file:
+        path: log
+        state: directory
+        owner: "{{ ansible_env.USER }}"
+        group: "{{ ansible_env.USER }}"
+      tags: always
+    - name: Write a start message to the playbook log
+      ansible.builtin.shell: >
+        printf "\nStarted playbook '{{ ansible_play_name }}' execution at {{ now() }}\n"
+        >> ./log/{{ inventory_hostname }}.log
+      run_once: true
+      delegate_to: localhost
+      args:
+        chdir: "{{ playbook_dir }}"
+      become: true
+      become_user: "{{ local_user }}"
+      changed_when: true
+      tags: always
+
+  roles:
+    # https://codeberg.org/ansible/common
+    - { role: common,                 become: true, tags: [ common ] }
+    # https://codeberg.org/ansible/common-systools
+    - { role: common-systools,        become: true, tags: [ common ] }
+    - { role: dotfiles,                             tags: [ dotfiles ] }
+    # https://codeberg.org/ansible/locales
+    - { role: locales,                become: true, tags: [ locales ] }
+    # https://codeberg.org/ansible/ssh
+    - { role: ssh,                    become: true, tags: [ ssh ] }
+    # https://codeberg.org/ansible/swap
+    - { role: swap,                   become: true, tags: [ swap ] }
+    ## i3 and window manager-related
+    # https://codeberg.org/ansible/desktop-environment
+    - { role: desktop-environment,    become: true, tags: [ desktop-environment ] }
+    # https://codeberg.org/ansible/i3wm
+    - { role: i3wm,                   become: true, tags: [ i3wm ] }
+    # https://codeberg.org/ansible/boot-grub
+    - { role: boot-grub,              become: true, tags: [ boot-grub ] }
+    # https://codeberg.org/ansible/flatpak-remote
+    - { role: flatpak-remote,         become: true, tags: [ flatpak-remote ] }
+    # https://codeberg.org/ansible/fonts
+    - { role: fonts,                  become: true, tags: [ fonts ] }
+    # https://codeberg.org/ansible/pulseaudio
+    - { role: pulseaudio,             become: true, tags: [ pulseaudio ] }
+    # https://codeberg.org/ansible/tailscale
+    - { role: tailscale,              become: true, tags: [ tailscale ] }
+    #### software
+    # https://codeberg.org/ansible/browser-firefox
+    - { role: browser-firefox,        become: true, tags: [ browser-firefox, firefox ] }
+    # https://codeberg.org/ansible/desktop-tools
+    - { role: desktop-tools,          become: true, tags: [ desktop-tools ] }
+    # https://codeberg.org/ansible/editor-vscodium
+    - { role: editor-vscodium,        become: true, tags: [ editor-vscodium, vscodium ] }
+    # https://codeberg.org/ansible/fityk
+    - { role: fityk,                  become: true, tags: [ fityk ] }
+    # https://codeberg.org/ansible/libreoffice
+    - { role: libreoffice,            become: true, tags: [ libreoffice ] }
+    # https://codeberg.org/ansible/okular
+    - { role: okular,                 become: true, tags: [ okular ] }
+    # https://codeberg.org/ansible/pandoc
+    - { role: pandoc,                 become: true, tags: [ pandoc ] }
+    # https://codeberg.org/ansible/rofi-calc
+    - { role: rofi-calc,                            tags: [ rofi-calc ] }
+    # https://codeberg.org/ansible/sioyek-pdf
+    - { role: sioyek-pdf,             become: true, tags: [ sioyek-pdf ] }
+    # https://codeberg.org/ansible/speech-to-text
+    - { role: speech-to-text,         become: true, tags: [ speech-to-text ] }
+    # https://codeberg.org/ansible/thorium-reader
+    - { role: thorium-reader,         become: true, tags: [ thorium-reader ] }
+    # https://codeberg.org/ansible/qbittorrent
+    - { role: qbittorrent,            become: true, tags: [ qbittorrent ] }
+    # https://codeberg.org/ansible/unison
+    - { role: unison,                 become: true, tags: [ unison ] }
+    # https://codeberg.org/ansible/zotero
+    - { role: zotero,                 become: true, tags: [ zotero ] }
+
+  post_tasks:
+    - name: Log the current commit of '{{ ansible_play_name }}' playbook
+      local_action: >
+        shell git log
+        --pretty="Playbook '{{ playbook_dir | basename }}' last commit %h %ci by %cn" -1
+        >> ./log/{{ inventory_hostname }}.log
+      args:
+        chdir: "{{ playbook_dir }}"
+      become: true
+      become_user: "{{ local_user }}"
+      tags: always
+    - name: Write an end message to the playbook log
+      ansible.builtin.shell: >
+        echo "Ended playbook '{{ ansible_play_name }}' execution at {{ now() }}"
+        >> ./log/{{ inventory_hostname }}.log
+      run_once: true
+      delegate_to: localhost
+      args:
+        chdir: "{{ playbook_dir }}"
+      become: true
+      become_user: "{{ local_user }}"
+      changed_when: true
+      tags: always
+
+
+#     #### other roles to consider including:
+#     - { role: browser-agregore,       become: true, tags: [ browser-agregore ] }
+#     - { role: browser-beaker,         become: true, tags: [ browser-beaker, beaker ] }
+#     - { role: browser-brave,          become: true, tags: [ browser-brave, brave ] }
+#     - { role: browser-chrome,         become: true, tags: [ browser-chrome, chrome ] }
+#     - { role: browser-chromium,       become: true, tags: [ browser-chromium, chromium ] }
+#     - { role: browser-min,            become: true, tags: [ browser-min ] }
+#     - { role: browser-opera,          become: true, tags: [ browser-opera ] }
+#     - { role: browser-vivaldi,        become: true, tags: [ browser-vivaldi ] }
+#     - { role: digikam,                become: true, tags: [ digikam ] }
+#     - { role: editor-atom,            become: true, tags: [ editor-atom, atom ] }
+#     - { role: editor-nano,            become: true, tags: [ editor-nano, nano ] }
+#     - { role: editor-sublime,         become: true, tags: [ editor-sublime, sublime ] }
+#     - { role: freemind,               become: true, tags: [ freemind ] }
+#     - { role: freerdp,                become: true, tags: [ freerdp ] }
+#     - { role: imagemagick,            become: true, tags: [ imagemagick ] }
+#     - { role: iriun-webcam,           become: true, tags: [ iriun-webcam, iriun ] }
+#     - { role: mpv,                    become: true, tags: [ mpv ] }
+#     - { role: nuclear-musicplayer,    become: true, tags: [ nuclear-musicplayer, nuclear ] }
+#     - { role: pcmanfm,                become: true, tags: [ pcmanfm ] }
+#     - { role: peek,                   become: true, tags: [ peek ] } # animated GIF recorder
+#     - { role: picom,                  become: true, tags: [ picom ] }
+#     - { role: pipe-viewer,            become: true, tags: [ pipe-viewer ] }
+#     - { role: screenkey,              become: true, tags: [ screenkey ] }
+#     - { role: shutter,                become: true, tags: [ shutter ] }
+#     - { role: thunderbird,            become: true, tags: [ thunderbird ] }
+#     - { role: ultimaker-cura,         become: true, tags: [ ultimaker-cura ] }
+#     - { role: vlc,                    become: true, tags: [ vlc, vlc-videolan ] }
+#     - { role: x2goclient,             become: true, tags: [ x2goclient ] }
+#     - { role: x2goserver,             become: true, tags: [ x2goserver ] }
+#     - { role: xournalpp,              become: true, tags: [ xournalpp ] }
+#     - { role: zoom-client,            become: true, tags: [ zoom-client ] }

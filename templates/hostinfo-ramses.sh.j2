@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# https://stackoverflow.com/a/12694189/1198249
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+
+# define echo colours
+. "$DIR/echo-colours.sh"
+
+# define sysload parameters
+. "$DIR/status-sysload.sh"
+
+# clear the screen
+clear
+# http://www.patorjk.com/software/taag/#p=display&f=Slant&t=ramses
+cat << "EOF"
+   _________ _____ ___  ________  _____
+  / ___/ __ `/ __ `__ \/ ___/ _ \/ ___/
+ / /  / /_/ / / / / / (__  )  __(__  )
+/_/   \__,_/_/ /_/ /_/____/\___/____/
+
+EOF
+
+ipv4address=$(ip addr show enp0s31f6 | awk '/inet / {print $2}')
+# uptime in pretty format without the initial 'up ' in the output
+uptimestring=$(uptime -p | cut -d' ' -f2-)
+
+printf "${BGreen}${On_Black}$(lsb_release -is) $(lsb_release -ds | awk '{print $2}')${Color_Off} "
+printf "($(uname -o) $(uname -r) $(uname -m))\n"
+printf "IPv4 address: ${BWhite}$ipv4address${Color_Off}\t ${On_Red}Uppsala${Color_Off} (FS1)\n"
+printf "Uptime: ${BPurple}$uptimestring${Color_Off}\n"
+
+
+# explicitly prepending LC_ALL="C.UTF-8" hides the error message that otherwise affects script but not interactive execution:
+#   ERROR: Ansible could not initialize the preferred locale: unsupported locale setting
+#   /home/taha/.local/bin/hostinfo: line 35: -1: substring expression < 0 #}
+# https://github.com/ansible/ansible/issues/80526
+# https://github.com/ansible/vscode-ansible/issues/690#issuecomment-1326253307
+# https://github.com/NixOS/nixpkgs/issues/223151
+# https://unix.stackexchange.com/questions/104096/locale-dependent-bash-script-how-to-properly-ensure-locale
+ansiblev=$(LC_ALL="C.UTF-8" ansible --version | awk 'NR==1{print $3}')
+ansibleversion=$(echo "${ansiblev::-1}")
+py3version=$(python3 --version | awk '{print $2}')
+pipversion=$(pip3 --version | awk '{print $2}')
+gitversion=$(git --version | awk '{print $3}')
+unisonversion=$(unison -version | awk '{print $3}')
+i3version=$(i3 --version | awk '{print $3}')
+
+
+printf "\nSoftware and services on this box:\n"
+
+printf "  * Ansible\t\t $ansibleversion\n"
+printf "  * Git\t\t\t $gitversion\n"
+printf "  * i3\t\t\t $i3version\n"
+printf "  * pip\t\t\t $pipversion\n"
+printf "  * Python\t\t $py3version\n"
+printf "  * unison\t\t $unisonversion\n"
+
+printf "\nThis file was last modified on $(date -r $0 -R)\n"
+
+exit 0

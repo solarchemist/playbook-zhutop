@@ -1,0 +1,4 @@
+*.code-workspace
+*.log
+log/
+naming.md

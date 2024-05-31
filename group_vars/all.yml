@@ -1,0 +1,59 @@
+---
+
+# please adjust default locale settings to your liking
+locale: "en_US.UTF-8"
+LC_time: "sv_SE.UTF-8"
+timezone: "Europe/Stockholm"
+
+
+# note that xdg-user-dirs-update supports only certain name strings
+# (see `man xdg-user-dirs-update` for details)
+# my point is to reduce the clutter of directories in $HOME
+locales_xdg_dirs:
+  - name: DESKTOP
+    path: "{{ ansible_env.HOME }}/Desktop"
+  - name: DOWNLOAD
+    path: "{{ ansible_env.HOME }}/Downloads"
+  # templates is a rather pointless directory, let's remap it to Downloads
+  - name: TEMPLATES
+    path: "{{ ansible_env.HOME }}/Downloads"
+  - name: PUBLICSHARE
+    path: "{{ ansible_env.HOME }}/Public"
+  - name: DOCUMENTS
+    path: "{{ ansible_env.HOME }}/Documents"
+  # music is a rather pointless directory, let's remap it
+  - name: MUSIC
+    path: "{{ ansible_env.HOME }}/Downloads"
+  # pictures is a rather pointless directory, let's remap it
+  - name: PICTURES
+    path: "{{ ansible_env.HOME }}/Downloads"
+  # videos is a rather pointless directory, let's remap it
+  - name: VIDEOS
+    path: "{{ ansible_env.HOME }}/Downloads"
+
+
+R_directory: /opt/R
+texlive_directory: /usr/local/texlive
+
+## Github and Plotly API tokens used by the R role
+# GITHUB_PAT Your Github personal access token
+R_GITHUB_PAT: "yoursecrettoken"
+# Your Plotly API username and key
+plotly_api_user: "{{ ansible_env.USER }}"
+plotly_api_key: "yourapikey"
+
+xdg_data_dir: "{{ ansible_env.HOME }}/.local/share"
+xdg_desktop_entries: "{{ xdg_data_dir }}/applications"
+xdg_desktop_icons: "{{ xdg_data_dir }}/icons"
+
+# aptitude cache, time in seconds
+aptcachetime: 3600
+
+local_user: "{{ lookup('env', 'USER') }}"
+
+# we use "not (host_restrictions | bool) or <some other test>" and want host_restrictions
+# to act like sort of a filter to avoid the "other test" evaluating and failing because
+# the variable it is testing does not exist outside my own environment
+# host_restrictions should thus be False by default so the first part above evaluates
+# to True and thus Ansible will skip the rest of the evaluation and no errors
+host_restrictions: false
